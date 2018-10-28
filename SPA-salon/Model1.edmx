@@ -1,0 +1,168 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Model1.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="Model1StoreContainer">
+    <EntitySet Name="CategorySet" EntityType="Model1.Store.CategorySet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ServicesSet" EntityType="Model1.Store.ServicesSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="PurchaseSet" EntityType="Model1.Store.PurchaseSet" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="CategoryServices" Association="Model1.Store.CategoryServices">
+      <End Role="Category" EntitySet="CategorySet" />
+      <End Role="Services" EntitySet="ServicesSet" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="CategorySet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name_cat" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ServicesSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name_ser" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Price" Type="int" Nullable="false" />
+    <Property Name="Time" Type="time" Nullable="false" />
+    <Property Name="Id_cat" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PurchaseSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Id_ser" Type="int" Nullable="false" />
+    <Property Name="Person" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Phone" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="false" />
+  </EntityType>
+  <Association Name="CategoryServices">
+    <End Role="Category" Type="Model1.Store.CategorySet" Multiplicity="1" />
+    <End Role="Services" Type="Model1.Store.ServicesSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Category">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Services">
+        <PropertyRef Name="Id_cat" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Model1" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="Model1Container" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CategorySet" EntityType="Model1.Category" />
+          <EntitySet Name="ServicesSet" EntityType="Model1.Services" />
+          <EntitySet Name="PurchaseSet" EntityType="Model1.Purchase" />
+          <AssociationSet Name="CategoryServices" Association="Model1.CategoryServices">
+            <End Role="Category" EntitySet="CategorySet" />
+            <End Role="Services" EntitySet="ServicesSet" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name_cat" Type="String" Nullable="false" />
+          <NavigationProperty Name="Services" Relationship="Model1.CategoryServices" FromRole="Category" ToRole="Services" />
+        </EntityType>
+        <EntityType Name="Services">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name_ser" Type="String" Nullable="false" />
+          <Property Name="Price" Type="Int32" Nullable="false" />
+          <Property Name="Time" Type="Time" Nullable="false" />
+          <Property Name="Id_cat" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Category" Relationship="Model1.CategoryServices" FromRole="Services" ToRole="Category" />
+        </EntityType>
+        <EntityType Name="Purchase">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id_ser" Type="Int32" Nullable="false" />
+          <Property Name="Person" Type="String" Nullable="false" />
+          <Property Name="Phone" Type="String" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" />
+        </EntityType>
+        <Association Name="CategoryServices">
+          <End Type="Model1.Category" Role="Category" Multiplicity="1" />
+          <End Type="Model1.Services" Role="Services" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Services">
+              <PropertyRef Name="Id_cat" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="Model1StoreContainer" CdmEntityContainer="Model1Container">
+    <EntitySetMapping Name="CategorySet">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Category)">
+        <MappingFragment StoreEntitySet="CategorySet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name_cat" ColumnName="Name_cat" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ServicesSet">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Services)">
+        <MappingFragment StoreEntitySet="ServicesSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name_ser" ColumnName="Name_ser" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="Time" ColumnName="Time" />
+          <ScalarProperty Name="Id_cat" ColumnName="Id_cat" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PurchaseSet">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Purchase)">
+        <MappingFragment StoreEntitySet="PurchaseSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Id_ser" ColumnName="Id_ser" />
+          <ScalarProperty Name="Person" ColumnName="Person" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
